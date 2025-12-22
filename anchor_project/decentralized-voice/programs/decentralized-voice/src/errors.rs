@@ -6,6 +6,6 @@ pub enum DecentralizedVoiceErrors {
     #[msg("Maximum pool name length exceeded")] PoolLenghExceeded, 
     #[msg("Maximum length for candidate names exceeded")] PoolCandidateLength, 
     #[msg("You have to be the pool owner to create candidates")] NotPoolOwner,
-    #[msg("Maximum candidate reached") ] MaximumCandidateReached,
-
+    #[msg("Maximum candidate reached")] MaximumCandidateReached,
+    #[msg("Error Overflow Occured")] OverflowOccured   
 }

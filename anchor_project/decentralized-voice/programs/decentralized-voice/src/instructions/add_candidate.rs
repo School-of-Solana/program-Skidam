@@ -32,18 +32,22 @@ pub fn add_candidate (ctx: Context<AddCandidateContext>, candidate_name: String)
 #[instruction(candidate_name:String)]
 pub struct AddCandidateContext<'info> {
     #[account(mut)]
-    candidate_creator: Signer<'info>,
+    pub candidate_creator: Signer<'info>,
     #[account(mut)]
-    created_pool: Account<'info, Pool>,
+    pub created_pool: Account<'info, Pool>,
     #[account(
         init, 
         payer = candidate_creator,
         space = 8 + Candidate::INIT_SPACE,
-        seeds = [b"candidate", candidate_creator.key().as_ref(),candidate_name.as_bytes(),created_pool.key().as_ref()], 
+        seeds = [
+            b"candidate",
+            candidate_creator.key().as_ref(),
+            candidate_name.as_bytes(),
+            created_pool.key().as_ref()], 
         bump,
 
     )]
-    candidate : Account<'info, Candidate>, 
+    pub candidate : Account<'info, Candidate>, 
     system_program: Program<'info,System>,
 
 }
