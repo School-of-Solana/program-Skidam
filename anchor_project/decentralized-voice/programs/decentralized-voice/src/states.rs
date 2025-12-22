@@ -1,7 +1,8 @@
 use anchor_lang::prelude::*;     
 
 const POOL_NAME_LENGTH : usize = 32; 
-const POOL_CANDIDATE_LENGTH : usize = 500;
+const CANDIDATE_NAME_LENGTH : usize = 32;
+
 
 // Seems every variable size needs to be known beforehand
 // Clone trait is needed for Status so it can be used in Pool
@@ -26,8 +27,18 @@ pub struct Pool {
     #[max_len(POOL_NAME_LENGTH)]
     pub name: String,
     pub status: Status,
-    #[max_len(POOL_CANDIDATE_LENGTH)]
-    pub candidates: String,
+    pub total_candidate: i64,
+    pub max_candidate_number: i64,
     pub creator: Pubkey, 
 
+}
+
+
+#[account]
+#[derive(InitSpace)]
+pub struct Candidate {
+    #[max_len(CANDIDATE_NAME_LENGTH)]
+    pub name: String,
+    pub votes: i64,
+    pub creator: Pubkey
 }

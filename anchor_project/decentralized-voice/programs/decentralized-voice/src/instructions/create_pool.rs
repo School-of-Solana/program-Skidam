@@ -3,14 +3,16 @@ use crate::states::*;
 
 
 
-pub fn create_pool(ctx: Context<CreatePoolContext>, name: String, candidates: String ) -> Result<()> {
+pub fn create_pool(ctx: Context<CreatePoolContext>, name: String, max_candidate_number: i64 ) -> Result<()> {
 
     let created_pool = &mut ctx.accounts.created_pool; 
 
     created_pool.name = name; 
-    created_pool.candidates = candidates;
+    created_pool.status = Status::Active;
+    created_pool.total_candidate = 0;
+    created_pool.max_candidate_number = max_candidate_number; 
     created_pool.creator = ctx.accounts.pool_creator.key(); 
-    //created_pool.status = Status::Active; 
+
 
     Ok(())
 

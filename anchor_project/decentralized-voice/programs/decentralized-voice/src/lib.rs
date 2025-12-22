@@ -12,8 +12,8 @@ pub mod decentralized_voice {
 
     use super::*;
 
-    pub fn pool_create(ctx: Context<CreatePoolContext>, name: String, candidates: String) -> Result<()> {
-        create_pool(ctx, name, candidates)  
+    pub fn pool_create(ctx: Context<CreatePoolContext>, name: String, max_candidate_number: i64) -> Result<()> {
+        create_pool(ctx, name, max_candidate_number)  
     }
 
 
