@@ -2,7 +2,7 @@ use anchor_lang::prelude::*;
 use crate::states::*; 
 use crate::errors::DecentralizedVoiceErrors;
 
-pub fn add_candidate (ctx: Context<AddCandidateContext>, candidate_name: String) -> Result<()> {
+pub fn remove_candidate (ctx: Context<RemoveCandidateContext>, candidate_name: String) -> Result<()> {
 
 
     let candidate_creator = &mut ctx.accounts.candidate_creator; 
@@ -13,16 +13,8 @@ pub fn add_candidate (ctx: Context<AddCandidateContext>, candidate_name: String)
         return Err(DecentralizedVoiceErrors::NotPoolOwner.into())
     }
 
-    if created_pool.total_candidate == created_pool.max_candidate_number {
-        return Err(DecentralizedVoiceErrors::MaximumCandidateReached.into())
-    }
 
-    created_pool.total_candidate +=1;
-    candidate.name = candidate_name; 
-    candidate.pool_address = created_pool.key();
-    candidate.votes = 0;
-    candidate.creator = candidate_creator.key();
-    
+    created_pool.total_candidate -=1;
 
 
     Ok(())
@@ -32,15 +24,14 @@ pub fn add_candidate (ctx: Context<AddCandidateContext>, candidate_name: String)
 
 #[derive(Accounts)]
 #[instruction(candidate_name:String)]
-pub struct AddCandidateContext<'info> {
+pub struct RemoveCandidateContext<'info> {
     #[account(mut)]
     pub candidate_creator: Signer<'info>,
     #[account(mut)]
     pub created_pool: Account<'info, Pool>,
     #[account(
-        init, 
-        payer = candidate_creator,
-        space = 8 + Candidate::INIT_SPACE,
+        mut, 
+        close = candidate_creator,
         seeds = [
             b"candidate",
             candidate_creator.key().as_ref(),
